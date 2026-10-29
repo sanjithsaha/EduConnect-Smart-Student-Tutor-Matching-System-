@@ -7,9 +7,8 @@ Mawlana Bhashani Science and Technology University (MBSTU), Bangladesh
 |---|---|
 | Student | `[Sanjith Saha]` |
 | Student ID | `[IT-24044]` |
-| Course | `[Course Title]` (`[Course Code]`) |
-| Instructor | `[Instructor Name]` |
-| Submission date | `[Submission Date]` |
+| Course | `[Software Engineering and Project Management ]` (`[ICT-3107]`) |
+| Instructor | `Dr. Ziaur Rahman]` |
 
 EduConnect helps a student find the best tutor: it ranks tutors with a **transparent weighted score**, explains every score, checks **real availability**, and lets the student request a slot while **preventing double bookings**.
 
