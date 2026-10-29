@@ -1,0 +1,42 @@
+@startuml
+!include _style.iuml
+title EduConnect - Activity Diagram: Match and Book a Tutor
+|Student|
+start
+:Enter requirements\n(subject, budget, mode, days,\ntime window, minimum rating);
+|System|
+repeat
+  :Validate requirements;
+backward:Show validation errors;
+repeat while (Requirements valid?) is (no) not (yes)
+:Filter verified tutors\nwho teach the subject;
+:Check each tutor's free\navailability slots;
+:Compute weighted component scores\n(subject, availability, budget,\nrating, mode, experience);
+:Rank tutors and generate\ncompatibility explanations;
+|Student|
+:Review ranked list\nand explanations;
+:Select a tutor and a free slot;
+|System|
+if (Slot free AND no overlapping\nbooking for student/tutor?) then (yes)
+  :Create booking with status PENDING;
+  :Mark slot as booked;
+  |Tutor|
+  :Review booking request;
+  if (Accept request?) then (yes)
+    |System|
+    :Set status CONFIRMED;
+  else (no)
+    |System|
+    :Set status CANCELLED;
+    :Release slot;
+  endif
+  |Student|
+  :View booking status;
+else (no)
+  |System|
+  :Reject booking and\nshow conflict reason;
+  |Student|
+  :Choose another slot or tutor;
+endif
+stop
+@enduml

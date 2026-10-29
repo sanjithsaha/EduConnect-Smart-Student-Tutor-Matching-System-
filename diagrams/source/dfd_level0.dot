@@ -1,0 +1,18 @@
+// EduConnect - DFD Level 0 (Context Diagram). Yourdon/DeMarco notation.
+digraph DFD0 {
+  graph [rankdir=LR, labelloc=t, label="EduConnect - Data Flow Diagram, Level 0 (Context)", fontsize=18, fontcolor="#1F4E79", fontname="Helvetica", nodesep=0.8, ranksep=2.2, pad=0.3];
+  node  [fontname="Helvetica", fontsize=12, color="#1F4E79"];
+  edge  [fontname="Helvetica", fontsize=10, color="#1F4E79", fontcolor="#333333"];
+
+  Student [shape=box, style=filled, fillcolor="#FFF4D6", label="Student"];
+  Tutor   [shape=box, style=filled, fillcolor="#FFF4D6", label="Tutor"];
+  Admin   [shape=box, style=filled, fillcolor="#FFF4D6", label="Administrator"];
+  P0 [shape=circle, style=filled, fillcolor="#F4F8FC", width=2.2, fixedsize=true, label="0\nEduConnect\nMatching &\nBooking System"];
+
+  Student -> P0 [label="registration details,\ntutoring requirements,\nbooking / cancel requests"];
+  P0 -> Student [label="ranked tutors with\nexplanations, booking\nstatus, error messages"];
+  Tutor -> P0 [label="profile, subjects,\navailability slots,\naccept / decline / complete"];
+  P0 -> Tutor [label="booking requests,\nstatus notifications"];
+  Admin -> P0 [label="verification decisions,\nsubject updates"];
+  P0 -> Admin [label="pending profiles,\nusage summary"];
+}

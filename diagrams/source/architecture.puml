@@ -1,0 +1,39 @@
+@startuml
+!include _style.iuml
+title EduConnect - System Architecture (three-tier; prototype scope highlighted)
+skinparam componentStyle rectangle
+skinparam rectangle {
+  BackgroundColor #F4F8FC
+  BorderColor #1F4E79
+}
+
+package "Presentation Tier (Browser)" {
+  [Responsive Web UI\nHTML5 / CSS3 / JavaScript] as UI #D6F0DC
+}
+package "Application Tier (REST API - planned)" {
+  [Auth & Profile Service] as AUTH
+  [Matching Service\n(TutorMatcher)] as MATCH #D6F0DC
+  [Booking Service\n(BookingManager)] as BOOK #D6F0DC
+  [Availability Service] as AVAIL
+  [Notification Service] as NOTIF
+}
+package "Data Tier" {
+  database "Relational DB\n(MySQL / PostgreSQL)" as DB
+  database "Browser localStorage\n(prototype only)" as LS #D6F0DC
+}
+
+UI --> AUTH : HTTPS / JSON
+UI --> MATCH
+UI --> BOOK
+UI --> AVAIL
+BOOK --> NOTIF
+AUTH --> DB
+MATCH --> DB
+BOOK --> DB
+AVAIL --> DB
+UI ..> LS : prototype persistence
+legend right
+  green = implemented in the Part I prototype
+  white = planned for the full system
+endlegend
+@enduml

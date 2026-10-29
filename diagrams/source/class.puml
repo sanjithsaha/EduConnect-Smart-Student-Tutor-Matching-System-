@@ -1,0 +1,125 @@
+@startuml
+!include _style.iuml
+title EduConnect - Class Diagram (matches prototype/js/*.js)
+hide empty members
+skinparam nodesep 40
+skinparam ranksep 50
+
+abstract class User <<prototype>> {
+  # id : String
+  # name : String
+  # email : String
+  + displayName : String
+}
+class Student <<prototype>> {
+  - department : String
+  - academicLevel : String
+  + createRequirement(params) : StudentRequirement
+}
+class Tutor <<prototype>> {
+  - bio : String
+  - hourlyRate : Number
+  - experienceYears : Number
+  - rating : Number
+  - teachingMode : String
+  - isVerified : Boolean
+  - proficiency : Map<subjectId, 1..5>
+  - slots : AvailabilitySlot[]
+  + addSubject(subjectId, level) : void
+  + teaches(subjectId) : Boolean
+  + getProficiency(subjectId) : Number
+  + addSlot(slot) : void
+  + getFreeSlots() : AvailabilitySlot[]
+}
+class Subject <<prototype>> {
+  - id : String
+  - name : String
+  - category : String
+}
+class AvailabilitySlot <<prototype>> {
+  - id : String
+  - tutorId : String
+  - day : String
+  - start : String
+  - end : String
+  - isBooked : Boolean
+  + durationMinutes : Number
+  + overlapMinutes(start, end) : Number
+  + overlapsSlot(other) : Boolean
+  + book() : void
+  + release() : void
+}
+class StudentRequirement <<prototype>> {
+  - studentId : String
+  - subjectId : String
+  - maxBudget : Number
+  - mode : String
+  - days : String[]
+  - windowStart : String
+  - windowEnd : String
+  - minRating : Number
+  + hasWindow() : Boolean
+  + validate() : String[]
+}
+class MatchResult <<prototype>> {
+  - tutor : Tutor
+  - score : Number
+  - breakdown : Object[]
+  - explanation : String[]
+  - matchingSlots : AvailabilitySlot[]
+  + summary : String
+}
+class TutorMatcher <<prototype>> {
+  - weights : Object
+  + match(requirement, tutors) : MatchResult[]
+  + setWeights(weights) : void
+  - scoreSubject() : Number
+  - scoreAvailability() : Object
+  - scoreBudget() : Number
+  - scoreRating() : Number
+  - scoreMode() : Number
+  - scoreExperience() : Number
+}
+class Booking <<prototype>> {
+  - id : String
+  - studentId : String
+  - tutorId : String
+  - slotId : String
+  - subjectId : String
+  - status : BookingStatus
+  - createdAt : String
+  + isActive : Boolean
+  + transitionTo(status) : void
+}
+class BookingManager <<prototype>> {
+  - bookings : Booking[]
+  + createBooking(student, tutor, slot, subject) : Result
+  + findConflict(studentId, slot, tutor) : String
+  + updateStatus(id, status) : Result
+  + getByStudent(studentId) : Booking[]
+  + reset() : void
+}
+enum BookingStatus <<prototype>> {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+}
+
+User <|-- Student
+User <|-- Tutor
+Tutor "1" *-- "0..*" AvailabilitySlot : offers
+Tutor "0..*" -- "0..*" Subject : teaches (proficiency)
+Student "1" -- "0..*" StudentRequirement : submits
+StudentRequirement "0..*" --> "1" Subject
+TutorMatcher ..> StudentRequirement : reads
+TutorMatcher ..> Tutor : ranks
+TutorMatcher ..> MatchResult : creates
+MatchResult "0..*" --> "1" Tutor
+BookingManager "1" o-- "0..*" Booking
+Booking "0..*" --> "1" Student
+Booking "0..*" --> "1" Tutor
+Booking "0..*" --> "1" AvailabilitySlot
+Booking "0..*" --> "1" Subject
+Booking --> BookingStatus
+@enduml

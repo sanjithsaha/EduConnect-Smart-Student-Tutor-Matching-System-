@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EduConnect - Smart Student-Tutor Matching (Prototype)</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="logo" aria-hidden="true">E</span> EduConnect <span class="badge badge-proto">Prototype</span></div>
+    <label class="who">Acting as
+      <select id="studentSelect" aria-label="Choose demo student"></select>
+    </label>
+  </header>
+
+  <div class="notice" role="note">
+    <strong>Academic prototype.</strong> Sample data is fictional, there is no login or server, and bookings are stored only in this browser.
+    <a href="#limitations">See limitations</a>.
+  </div>
+
+  <main>
+    <section class="card" aria-labelledby="h-req">
+      <h2 id="h-req">1. Tell us what you need</h2>
+      <form id="reqForm" novalidate>
+        <div class="grid">
+          <label>Subject
+            <select id="subject" required></select>
+          </label>
+          <label>Max budget (BDT / hour)
+            <input id="budget" type="number" min="1" max="10000" step="50" value="650" required>
+          </label>
+          <label>Preferred mode
+            <select id="mode"><option>Any</option><option selected>Online</option><option>In-person</option></select>
+          </label>
+          <label>Minimum rating
+            <select id="minRating"><option value="0">No minimum</option><option value="3.5">3.5+</option><option value="4" selected>4.0+</option><option value="4.5">4.5+</option></select>
+          </label>
+          <label>Window start
+            <input id="winStart" type="time" value="18:00">
+          </label>
+          <label>Window end
+            <input id="winEnd" type="time" value="20:00">
+          </label>
+        </div>
+        <fieldset class="days">
+          <legend>Preferred days (leave empty for any day)</legend>
+          <div id="dayBoxes"></div>
+        </fieldset>
+        <details class="weights">
+          <summary>Matching priorities (advanced)</summary>
+          <p class="muted">Higher value = more influence on the score. Values are normalised automatically.</p>
+          <div id="weightBoxes" class="grid"></div>
+        </details>
+        <div id="formErrors" class="errors" role="alert" hidden></div>
+        <div class="actions">
+          <button type="submit" class="btn primary">Find tutors</button>
+          <button type="button" id="demoBtn" class="btn">Load demo scenario</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="card" aria-labelledby="h-res">
+      <h2 id="h-res">2. Ranked matches</h2>
+      <p id="resMeta" class="muted">Submit your requirements to see ranked tutors, compatibility scores and explanations.</p>
+      <div id="results" class="results"></div>
+    </section>
+
+    <section class="card" aria-labelledby="h-book">
+      <div class="row-between">
+        <h2 id="h-book">3. My bookings</h2>
+        <button id="resetBtn" class="btn small" type="button">Reset demo data</button>
+      </div>
+      <p class="muted">Tutor actions (accept, decline, complete) are simulated with the buttons below because the prototype has no tutor login.</p>
+      <div id="bookings"></div>
+    </section>
+
+    <section class="card" id="limitations" aria-labelledby="h-lim">
+      <h2 id="h-lim">Prototype limitations</h2>
+      <ul>
+        <li>No back-end, authentication or real database; data lives in JavaScript objects and <code>localStorage</code>.</li>
+        <li>Availability is a recurring weekly slot (no calendar dates, time zones or recurring-booking logic).</li>
+        <li>Tutor ratings, rates and profiles are synthetic; no reviews, payments or notifications.</li>
+        <li>Weighted-sum matching is transparent but not learned from data; weights are hand-chosen defaults.</li>
+        <li>Conflict checks run in the browser only; a production system must enforce them server-side in a database transaction.</li>
+      </ul>
+    </section>
+  </main>
+
+  <dialog id="bookDialog" aria-labelledby="dlgTitle">
+    <form method="dialog">
+      <h3 id="dlgTitle">Confirm booking request</h3>
+      <p id="dlgBody"></p>
+      <div class="actions">
+        <button value="cancel" class="btn">Back</button>
+        <button id="dlgConfirm" value="confirm" class="btn primary">Request booking</button>
+      </div>
+    </form>
+  </dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <footer>EduConnect - MBSTU Capstone Part I prototype &middot; [Student Name] &middot; [Student ID]</footer>
+
+  <script src="js/models.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/matcher.js"></script>
+  <script src="js/bookingManager.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+// EduConnect - DFD Level 1. Yourdon/DeMarco notation:
+// boxes = external entities, circles = processes, open rectangles = data stores.
+digraph DFD1 {
+  graph [rankdir=LR, labelloc=t, label="EduConnect - Data Flow Diagram, Level 1", fontsize=18, fontcolor="#1F4E79", fontname="Helvetica", nodesep=0.55, ranksep=1.6, pad=0.3, splines=true];
+  node  [fontname="Helvetica", fontsize=11, color="#1F4E79"];
+  edge  [fontname="Helvetica", fontsize=9, color="#1F4E79", fontcolor="#333333"];
+
+  // External entities
+  Student [shape=box, style=filled, fillcolor="#FFF4D6", label="Student"];
+  Tutor   [shape=box, style=filled, fillcolor="#FFF4D6", label="Tutor"];
+  Admin   [shape=box, style=filled, fillcolor="#FFF4D6", label="Administrator"];
+
+  // Processes
+  node [shape=circle, style=filled, fillcolor="#F4F8FC", width=1.55, fixedsize=true];
+  P1 [label="1.0\nManage Accounts\n& Profiles"];
+  P2 [label="2.0\nCapture\nRequirements"];
+  P3 [label="3.0\nMatch & Rank\nTutors"];
+  P4 [label="4.0\nManage\nAvailability"];
+  P5 [label="5.0\nProcess\nBookings"];
+  P6 [label="6.0\nUpdate Booking\nStatus"];
+
+  // Data stores (open-ended rectangles)
+  node [shape=none, style="", fixedsize=false, width=0, margin=0];
+  D1 [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="6"><TR><TD SIDES="TB" BGCOLOR="#D6E4F2">D1</TD><TD SIDES="TB">Users &amp; Profiles</TD></TR></TABLE>>];
+  D2 [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="6"><TR><TD SIDES="TB" BGCOLOR="#D6E4F2">D2</TD><TD SIDES="TB">Subjects &amp; Tutor Skills</TD></TR></TABLE>>];
+  D3 [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="6"><TR><TD SIDES="TB" BGCOLOR="#D6E4F2">D3</TD><TD SIDES="TB">Availability Slots</TD></TR></TABLE>>];
+  D4 [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="6"><TR><TD SIDES="TB" BGCOLOR="#D6E4F2">D4</TD><TD SIDES="TB">Match Requests</TD></TR></TABLE>>];
+  D5 [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="6"><TR><TD SIDES="TB" BGCOLOR="#D6E4F2">D5</TD><TD SIDES="TB">Bookings</TD></TR></TABLE>>];
+
+  // 1.0 accounts
+  Student -> P1 [label="registration\ndetails"];
+  Tutor   -> P1 [label="profile &\nsubjects"];
+  Admin   -> P1 [label="verification,\nsubject updates"];
+  P1 -> D1 [label="user records"];
+  P1 -> D2 [label="tutor skills,\nsubject list"];
+
+  // 2.0 requirements
+  Student -> P2 [label="tutoring\nrequirements"];
+  D2 -> P2 [label="subject list"];
+  P2 -> D4 [label="validated\nrequest"];
+  P2 -> Student [label="validation\nerrors"];
+
+  // 3.0 matching
+  D4 -> P3 [label="requirement"];
+  D2 -> P3 [label="tutor profiles,\nproficiency"];
+  D3 -> P3 [label="free slots"];
+  P3 -> Student [label="ranked tutors +\nexplanations"];
+
+  // 4.0 availability
+  Tutor -> P4 [label="availability\nupdates"];
+  P4 -> D3 [label="slot records"];
+
+  // 5.0 booking
+  Student -> P5 [label="booking\nrequest"];
+  D3 -> P5 [label="slot status"];
+  D5 -> P5 [label="existing bookings\n(conflict check)"];
+  P5 -> D5 [label="new booking\n(Pending)"];
+  P5 -> D3 [label="slot booked"];
+  P5 -> Student [label="confirmation /\nconflict message"];
+  P5 -> Tutor [label="booking\nrequest notice"];
+
+  // 6.0 status
+  Tutor -> P6 [label="accept / decline /\ncomplete"];
+  Student -> P6 [label="cancel request"];
+  D5 -> P6 [label="booking"];
+  P6 -> D5 [label="status update"];
+  P6 -> D3 [label="slot released"];
+  P6 -> Student [label="booking status"];
+}

@@ -1,0 +1,99 @@
+@startuml
+!include _style.iuml
+title EduConnect - Entity Relationship Diagram (Crow's Foot Notation)
+hide circle
+skinparam linetype ortho
+
+entity "users" as users {
+  * user_id : INT <<PK>>
+  --
+  * full_name : VARCHAR(100)
+  * email : VARCHAR(120) <<UNIQUE>>
+  * password_hash : VARCHAR(255)
+  * role : ENUM(student, tutor, admin)
+  phone : VARCHAR(20)
+  created_at : DATETIME
+}
+entity "students" as students {
+  * student_id : INT <<PK>>
+  --
+  * user_id : INT <<FK, UNIQUE>>
+  department : VARCHAR(80)
+  academic_level : VARCHAR(30)
+}
+entity "tutors" as tutors {
+  * tutor_id : INT <<PK>>
+  --
+  * user_id : INT <<FK, UNIQUE>>
+  bio : TEXT
+  * hourly_rate : DECIMAL(8,2)
+  experience_years : TINYINT
+  avg_rating : DECIMAL(2,1)
+  * teaching_mode : ENUM(online, in_person, both)
+  is_verified : BOOLEAN
+}
+entity "subjects" as subjects {
+  * subject_id : INT <<PK>>
+  --
+  * name : VARCHAR(80)
+  category : VARCHAR(50)
+}
+entity "tutor_subjects" as ts {
+  * tutor_id : INT <<PK, FK>>
+  * subject_id : INT <<PK, FK>>
+  --
+  * proficiency : TINYINT (1-5)
+}
+entity "availability_slots" as slots {
+  * slot_id : INT <<PK>>
+  --
+  * tutor_id : INT <<FK>>
+  * day_of_week : ENUM(Sat..Fri)
+  * start_time : TIME
+  * end_time : TIME
+  * is_booked : BOOLEAN
+}
+entity "match_requests" as req {
+  * request_id : INT <<PK>>
+  --
+  * student_id : INT <<FK>>
+  * subject_id : INT <<FK>>
+  * max_budget : DECIMAL(8,2)
+  preferred_mode : ENUM(any, online, in_person)
+  preferred_days : VARCHAR(30)
+  window_start : TIME
+  window_end : TIME
+  min_rating : DECIMAL(2,1)
+  created_at : DATETIME
+}
+entity "bookings" as bookings {
+  * booking_id : INT <<PK>>
+  --
+  * student_id : INT <<FK>>
+  * tutor_id : INT <<FK>>
+  * slot_id : INT <<FK>>
+  * subject_id : INT <<FK>>
+  request_id : INT <<FK, nullable>>
+  * status : ENUM(pending, confirmed, completed, cancelled)
+  * created_at : DATETIME
+}
+
+users ||--o| students : "has profile"
+users ||--o| tutors : "has profile"
+tutors ||--o{ ts : teaches
+subjects ||--o{ ts : "taught via"
+tutors ||--o{ slots : offers
+students ||--o{ req : submits
+subjects ||--o{ req : "requested for"
+students ||--o{ bookings : makes
+tutors ||--o{ bookings : receives
+slots ||--o{ bookings : "reserved by"
+subjects ||--o{ bookings : "booked for"
+req |o--o{ bookings : "results in"
+
+note bottom of bookings
+  Business rule: at most one ACTIVE (pending/confirmed)
+  booking per slot_id, enforced in the application layer
+  and by a partial unique index in the production schema.
+end note
+@enduml

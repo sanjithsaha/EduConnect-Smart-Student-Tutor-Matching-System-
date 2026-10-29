@@ -1,0 +1,40 @@
+\begin{ganttchart}[hgrid, vgrid={*{8}{draw=gray!30}}, y unit title=0.55cm, y unit chart=0.5cm, x unit=0.9cm,
+  title height=1, bar height=0.55, bar/.append style={fill=blue!45!black}, milestone/.append style={fill=orange!80!black},
+  bar label font=\scriptsize, milestone label font=\scriptsize, title label font=\scriptsize, link/.style={->, gray}]{1}{8}
+\gantttitle{Project week}{8} \\
+\gantttitlelist{1,...,8}{1} \\
+\ganttbar[name=T1]{T1 Requirements elicitation and stakeholder survey}{1}{1} \\
+\ganttbar[name=T2]{T2 Related-system review and literature search}{1}{2} \\
+\ganttbar[name=T3]{T3 SRS and use-case modelling}{2}{2} \\
+\ganttbar[name=T4]{T4 Database and data modelling}{2}{2} \\
+\ganttbar[name=T5]{T5 Process modelling (DFD and activity)}{3}{3} \\
+\ganttbar[name=T6]{T6 Class and object modelling}{3}{3} \\
+\ganttbar[name=T7]{T7 UI wireframes and responsive layout}{3}{4} \\
+\ganttbar[name=T8]{T8 Matching algorithm implementation}{4}{5} \\
+\ganttbar[name=T9]{T9 Availability and booking module}{4}{5} \\
+\ganttbar[name=T10]{T10 UI integration and status display}{6}{6} \\
+\ganttbar[name=T11]{T11 Testing and defect fixing}{7}{7} \\
+\ganttbar[name=T12]{T12 Proposal writing and review}{3}{7} \\
+\ganttbar[name=T13]{T13 Final review packaging and submission}{8}{8} \\
+\ganttmilestone[name=M1]{M1 Requirements baseline (SRS approved)}{2} \\
+\ganttmilestone[name=M2]{M2 Design complete (six diagrams)}{3} \\
+\ganttmilestone[name=M3]{M3 Core logic complete (matcher + booking)}{5} \\
+\ganttmilestone[name=M4]{M4 Integrated prototype}{6} \\
+\ganttmilestone[name=M5]{M5 Testing complete}{7} \\
+\ganttmilestone[name=M6]{M6 Final submission}{8}
+\ganttlink{T1}{T3}
+\ganttlink{T1}{T4}
+\ganttlink{T3}{T5}
+\ganttlink{T3}{T6}
+\ganttlink{T4}{T6}
+\ganttlink{T3}{T7}
+\ganttlink{T6}{T8}
+\ganttlink{T6}{T9}
+\ganttlink{T7}{T10}
+\ganttlink{T8}{T10}
+\ganttlink{T9}{T10}
+\ganttlink{T10}{T11}
+\ganttlink{T3}{T12}
+\ganttlink{T11}{T13}
+\ganttlink{T12}{T13}
+\end{ganttchart}

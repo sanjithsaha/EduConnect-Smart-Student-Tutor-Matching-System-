@@ -1,0 +1,75 @@
+@startuml
+!include _style.iuml
+title EduConnect - Object Diagram (snapshot from the prototype demo scenario)
+left to right direction
+
+object "nusrat : Student" as nusrat {
+  id = "S001"
+  name = "Nusrat Jahan"
+  department = "CSE"
+  academicLevel = "Year 2"
+}
+object "req1 : StudentRequirement" as req1 {
+  studentId = "S001"
+  subjectId = "SUB02"
+  maxBudget = 650
+  mode = "Online"
+  days = [Sat, Mon]
+  windowStart = "18:00"
+  windowEnd = "20:00"
+  minRating = 4
+}
+object "ds : Subject" as ds {
+  id = "SUB02"
+  name = "Data Structures"
+  category = "Computer Science"
+}
+object "matcher : TutorMatcher" as matcher {
+  weights = {subject:30, availability:25,\n budget:15, rating:15, mode:10, experience:5}
+}
+object "result1 : MatchResult" as result1 {
+  score = 93.2
+  matchingSlots = [SL001, SL002]
+}
+object "rahim : Tutor" as rahim {
+  id = "T001"
+  name = "Rahim Uddin"
+  hourlyRate = 600
+  experienceYears = 3
+  rating = 4.8
+  teachingMode = "Online"
+  proficiency = {SUB02: 5, SUB03: 5, SUB04: 4}
+}
+object "slot1 : AvailabilitySlot" as slot1 {
+  id = "SL001"
+  tutorId = "T001"
+  day = "Sat"
+  start = "18:00"
+  end = "20:00"
+  isBooked = true
+}
+object "mgr : BookingManager" as mgr {
+  bookings = [B001, B002]
+}
+object "b2 : Booking" as b2 {
+  id = "B002"
+  studentId = "S001"
+  tutorId = "T001"
+  slotId = "SL001"
+  subjectId = "SUB02"
+  status = PENDING
+}
+
+nusrat --> req1 : submits
+req1 --> ds : subject
+matcher ..> req1 : reads
+matcher --> result1 : creates
+result1 --> rahim : ranks
+rahim *-- slot1 : offers
+mgr o-- b2
+b2 --> nusrat
+b2 --> rahim
+b2 --> slot1
+b2 --> ds
+rahim .. ds : teaches (5/5)
+@enduml

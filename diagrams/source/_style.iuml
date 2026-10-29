@@ -1,0 +1,35 @@
+skinparam dpi 170
+skinparam shadowing false
+skinparam defaultFontName SansSerif
+skinparam defaultFontSize 12
+skinparam roundCorner 8
+skinparam ArrowColor #1F4E79
+skinparam titleFontSize 16
+skinparam titleFontColor #1F4E79
+skinparam class {
+  BackgroundColor #F4F8FC
+  BorderColor #1F4E79
+  HeaderBackgroundColor #D6E4F2
+}
+skinparam usecase {
+  BackgroundColor #F4F8FC
+  BorderColor #1F4E79
+}
+skinparam activity {
+  BackgroundColor #F4F8FC
+  BorderColor #1F4E79
+  DiamondBackgroundColor #FFF4D6
+  DiamondBorderColor #B7791F
+}
+skinparam object {
+  BackgroundColor #F4F8FC
+  BorderColor #1F4E79
+}
+skinparam entity {
+  BackgroundColor #F4F8FC
+  BorderColor #1F4E79
+}
+skinparam note {
+  BackgroundColor #FFF9E6
+  BorderColor #B7791F
+}
