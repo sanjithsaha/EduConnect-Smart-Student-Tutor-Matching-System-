@@ -5,8 +5,8 @@ Mawlana Bhashani Science and Technology University (MBSTU), Bangladesh
 
 | | |
 |---|---|
-| Student | `[Student Name]` |
-| Student ID | `[Student ID]` |
+| Student | `[Sanjith Saha]` |
+| Student ID | `[IT-24044]` |
 | Course | `[Course Title]` (`[Course Code]`) |
 | Instructor | `[Instructor Name]` |
 | Submission date | `[Submission Date]` |
